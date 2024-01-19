@@ -24,8 +24,9 @@ class SecondActivity : AppCompatActivity() {
             val index = it + 1 // Number the users starting from 1
             User("User $index", "Description for User $index")
         }
-        val usersItemList =  List(1000) {
-            UserItem(users.get(it),false)
+        val usersItemList =  mutableListOf<UserItem>()
+        for(i in 1..1000) {
+            UserItem(users.get(i),false)
         }
 
         val recyclerView = RecyclerView(this).apply {
