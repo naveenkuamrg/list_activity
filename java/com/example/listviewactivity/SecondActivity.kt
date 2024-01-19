@@ -52,7 +52,7 @@ class SecondActivity : AppCompatActivity() {
 
 class UserRecyclerViewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
-class UserRecyclerViewAdapter(val context: Context,val data : List<UserItem>) : RecyclerView.Adapter<UserRecyclerViewViewHolder>(){
+class UserRecyclerViewAdapter(val context: Context,var data : MutableList<UserItem>) : RecyclerView.Adapter<UserRecyclerViewViewHolder>(){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserRecyclerViewViewHolder {
        return  UserRecyclerViewViewHolder(ItemView(context))
     }
@@ -61,21 +61,30 @@ class UserRecyclerViewAdapter(val context: Context,val data : List<UserItem>) : 
         return  data.count()
     }
 
+
+
     override fun onBindViewHolder(holder: UserRecyclerViewViewHolder, position: Int) {
        val tView = holder.itemView as ItemView
         tView.textView.text = data[position].user.name
+        tView.textView1.text = data[position].user.des
         if(data[position].isSelected){
-            tView.addView(TextView(context).apply {
-                tag = "des"
-                text = data[position].user.des
-                layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT).apply {
-                    setMargins(30,10,10,10)
-                }
-
-            })
-            tView.setBackgroundColor(Color.MAGENTA)
+            tView.textView1.visibility = View.VISIBLE
+//            if(tView.findViewWithTag<TextView>("des") != null) {
+//                tView.addView(TextView(context).apply {
+//                    tag = "des"
+//                    text = data[position].user.des
+//                    layoutParams = LinearLayout.LayoutParams(
+//                        LinearLayout.LayoutParams.WRAP_CONTENT,
+//                        ViewGroup.LayoutParams.WRAP_CONTENT
+//                    ).apply {
+//                        setMargins(30, 10, 10, 10)
+//                    }
+//
+//                })
+//            }
+            tView.setBackgroundColor(Color.parseColor("#FF9800"))
         }else{
-            tView.removeView(tView.findViewWithTag("des"))
+            tView.textView1.visibility = View.INVISIBLE
             tView.setBackgroundColor(Color.TRANSPARENT)
         }
         tView.setOnClickListener {
@@ -93,6 +102,12 @@ class UserRecyclerViewAdapter(val context: Context,val data : List<UserItem>) : 
 
 class ItemView(context : Context) : LinearLayout(context){
     val textView = TextView(context).apply {
+        this@ItemView.addView(this)
+        layoutParams = LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT).apply {
+            setMargins(10,10,10,10)
+        }
+    }
+    val textView1 = TextView(context).apply {
         this@ItemView.addView(this)
         layoutParams = LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT).apply {
             setMargins(10,10,10,10)
