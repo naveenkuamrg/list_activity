@@ -21,12 +21,13 @@ class SecondActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val users = List(1000) {
+        val users = List(10000) {
             val index = it + 1 // Number the users starting from 1
             User("User $index", "Description for User $index")
         }
+
         val usersItemList =  mutableListOf<UserItem>()
-        for(i in 0..999) {
+        for(i in 0..9999) {
             usersItemList.add(UserItem(users[i],false))
         }
 
