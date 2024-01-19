@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -25,8 +26,8 @@ class SecondActivity : AppCompatActivity() {
             User("User $index", "Description for User $index")
         }
         val usersItemList =  mutableListOf<UserItem>()
-        for(i in 1..1000) {
-            UserItem(users.get(i),false)
+        for(i in 0..999) {
+            usersItemList.add(UserItem(users[i],false))
         }
 
         val recyclerView = RecyclerView(this).apply {
@@ -42,9 +43,22 @@ class SecondActivity : AppCompatActivity() {
             }
         }
 
+        val layout = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            addView(Button(this@SecondActivity).apply {
+                text = "Add User"
+                setOnClickListener {
+                    (recyclerView.adapter as UserRecyclerViewAdapter).addItem(1,
+                        UserItem(User("newUser","newUser des"),false)
+                    )
+                }
+            })
+            addView(recyclerView)
+        }
 
 
-        setContentView(recyclerView)
+
+        setContentView(layout)
 
     }
 
@@ -55,9 +69,13 @@ class UserRecyclerViewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemV
 
 class UserRecyclerViewAdapter(val context: Context,var data : MutableList<UserItem>) : RecyclerView.Adapter<UserRecyclerViewViewHolder>(){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserRecyclerViewViewHolder {
-       return  UserRecyclerViewViewHolder(ItemView(context))
+        return  UserRecyclerViewViewHolder(ItemView(context))
     }
 
+    fun addItem(position: Int,item : UserItem){
+        data.add(position,item)
+        notifyItemInserted(position)
+    }
     override fun getItemCount(): Int {
         return  data.count()
     }
@@ -65,7 +83,8 @@ class UserRecyclerViewAdapter(val context: Context,var data : MutableList<UserIt
 
 
     override fun onBindViewHolder(holder: UserRecyclerViewViewHolder, position: Int) {
-       val tView = holder.itemView as ItemView
+        Log.i("UserRecycleView","Position $position")
+        val tView = holder.itemView as ItemView
         tView.textView.text = data[position].user.name
         tView.textView1.text = data[position].user.des
         if(data[position].isSelected){
@@ -125,4 +144,3 @@ class ItemView(context : Context) : LinearLayout(context){
     }
 
 }
-

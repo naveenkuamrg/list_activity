@@ -1,4 +1,4 @@
-//package com.example.listviewactivity
+package com.example.listviewactivity//package com.example.listviewactivity
 //
 //import android.os.Bundle
 //import android.view.LayoutInflater
